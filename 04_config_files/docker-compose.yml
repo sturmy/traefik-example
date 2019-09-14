@@ -1,10 +1,11 @@
-version: "3.7"
+version: "3.1"
 services:
   traefik:
     image: traefik:v2.0
-    command: --providers.docker
+    command: --api --providers.docker
     ports:
       - "80:80"
+      - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:rw
       - ./traefik.yml:/etc/traefik/traefik.yml
@@ -12,9 +13,9 @@ services:
   web1:
     image: nginx:alpine
     labels:
-      - traefik.http.routers.web1.rule=Host(`web1.localhost`)
+      - traefik.http.routers.web1.rule=Host(`web1.test`)
   web2:
-    image: containous/whoami
+    image: kingdevnl/whoami:arm
     labels:
-      - traefik.http.routers.web2.rule=Host(`web2.localhost`) || ( Host(`localhost`) && PathPrefix(`/web2`) )
+      - traefik.http.routers.web2.rule=Host(`web2.test`) || ( Host(`localhost`) && PathPrefix(`/web2`) )
       - traefik.http.routers.web2.middlewares=demo-whitelist@file
