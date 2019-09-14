@@ -10,6 +10,11 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:rw
       - ./traefik.yml:/etc/traefik/traefik.yml
       - ./dynamic.yml:/etc/traefik/dynamic/traefik.yml
+    labels:
+    - "traefik.http.routers.api.rule=PathPrefix(`/api`) || PathPrefix(`/dashboard`)"
+    - "traefik.http.routers.api.service=api@internal"
+    - "traefik.http.routers.api.middlewares=auth"
+    - "traefik.http.middlewares.auth.basicauth.users=test:AAAAdGVzdA==,test2:AAAAdGVzdDI="
   web1:
     image: nginx:alpine
     labels:

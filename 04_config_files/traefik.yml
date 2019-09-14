@@ -2,8 +2,10 @@ global:
   sendAnonymousUsage: false
 providers:
   docker:
-    watch: true  
+    watch: true
   file:
     directory: /etc/traefik/dynamic
     watch: true
     filename: dynamic.yml
+api:
+  insecure: true
